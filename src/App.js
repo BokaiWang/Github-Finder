@@ -1,10 +1,12 @@
 import axios from "axios";
-import React, { Component } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { Component, Fragment } from "react";
 import NavBar from "./components/layout/NavBar";
 import Users from "./components/users/Users";
 import Search from "./components/users/Search";
-import "./App.css";
 import Alert from "./components/layout/Alert";
+import About from "./components/pages/About";
+import "./App.css";
 
 const github = axios.create({
   baseURL: "https://api.github.com",
@@ -41,19 +43,33 @@ class App extends Component {
   render() {
     const { users, loading } = this.state;
     return (
-      <div className="App">
-        <NavBar icon="fab fa-github" title="Hello" />
-        <div className="container">
-          <Alert alert={this.state.alert}></Alert>
-          <Search
-            searchUsers={this.searchUsers}
-            clearUsers={this.clearUsers}
-            showClear={users.length > 0 ? true : false}
-            setAlert={this.setAlert}
-          ></Search>
-          <Users loading={loading} users={users} />
+      <Router>
+        <div className="App">
+          <NavBar icon="fab fa-github" title="Hello" />
+          <div className="container">
+            <Alert alert={this.state.alert}></Alert>
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <Fragment>
+                    <Search
+                      searchUsers={this.searchUsers}
+                      clearUsers={this.clearUsers}
+                      showClear={users.length > 0 ? true : false}
+                      setAlert={this.setAlert}
+                    ></Search>
+                  </Fragment>
+                )}
+              />
+              <Route exact path="/about" component={About} />
+            </Switch>
+
+            <Users loading={loading} users={users} />
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
