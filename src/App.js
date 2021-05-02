@@ -18,6 +18,7 @@ class App extends Component {
   state = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
     alert: null,
   };
@@ -38,6 +39,16 @@ class App extends Component {
     this.setState({ user: res.data, loading: false });
   };
 
+  // Get user's repos
+  getUserRepos = async (username) => {
+    this.setState({ loading: true });
+    const res = await github.get(
+      `/users/${username}/repos?per_page=5&sort=created:asc?`
+    );
+
+    this.setState({ repos: res.data, loading: false });
+  };
+
   // Clear users from state
   clearUsers = () => {
     this.setState({ users: [], loading: false });
@@ -51,7 +62,7 @@ class App extends Component {
   };
 
   render() {
-    const { users, user, loading } = this.state;
+    const { users, user, repos, loading } = this.state;
     return (
       <Router>
         <div className="App">
@@ -84,6 +95,8 @@ class App extends Component {
                     getUser={this.getUser}
                     user={user}
                     loading={loading}
+                    getUserRepos={this.getUserRepos}
+                    repos={repos}
                   />
                 )}
               />
