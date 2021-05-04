@@ -47,7 +47,18 @@ const GithubState = (props) => {
     });
   };
 
-  // Get Repos
+  // Get User's repos
+  const getUserRepos = async (username) => {
+    setLoading(true);
+
+    const res = await github.get(
+      `/users/${username}/repos?per_page=5&sort=created:asc?`
+    );
+    dispatch({
+      type: GET_REPOS,
+      payload: res.data,
+    });
+  };
 
   // Clear Users
   const clearUsers = () => {
@@ -69,6 +80,7 @@ const GithubState = (props) => {
         searchUsers,
         clearUsers,
         getUser,
+        getUserRepos,
       }}
     >
       {props.children}
