@@ -6,7 +6,7 @@ import {
   SET_LOADING,
 } from "../types";
 
-export default (state, action) => {
+const githubReducer = (state, action) => {
   switch (action.type) {
     case SERACH_USERS:
       return {
@@ -41,3 +41,5 @@ export default (state, action) => {
       return state;
   }
 };
+
+export default githubReducer;
