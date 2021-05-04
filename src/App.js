@@ -17,20 +17,11 @@ const github = axios.create({
 });
 
 const App = () => {
-  const [users, setUsers] = useState([]);
-  const [user, setUser] = useState({});
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
 
   // Get a single Github user
-  const getUser = async (username) => {
-    setLoading(true);
-    const res = await github.get(`/users/${username}`);
-
-    setUser(res.data);
-    setLoading(false);
-  };
 
   // Get user's repos
   const getUserRepos = async (username) => {
@@ -41,12 +32,6 @@ const App = () => {
     );
     console.log("repos", res);
     setRepos(res.data);
-    setLoading(false);
-  };
-
-  // Clear users from state
-  const clearUsers = () => {
-    setUsers([]);
     setLoading(false);
   };
 
@@ -69,12 +54,8 @@ const App = () => {
                 path="/"
                 render={(props) => (
                   <Fragment>
-                    <Search
-                      clearUsers={clearUsers}
-                      showClear={users.length > 0 ? true : false}
-                      setAlert={showAlert}
-                    ></Search>
-                    <Users loading={loading} users={users} />
+                    <Search setAlert={showAlert}></Search>
+                    <Users />
                   </Fragment>
                 )}
               />
@@ -83,14 +64,7 @@ const App = () => {
                 exact
                 path="/user/:login"
                 render={(props) => (
-                  <User
-                    {...props}
-                    getUser={getUser}
-                    user={user}
-                    loading={loading}
-                    getUserRepos={getUserRepos}
-                    repos={repos}
-                  />
+                  <User {...props} getUserRepos={getUserRepos} repos={repos} />
                 )}
               />
             </Switch>

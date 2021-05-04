@@ -1,6 +1,6 @@
 import {
   SERACH_USERS,
-  GET_USERS,
+  GET_USER,
   CLEAR_USERS,
   GET_REPOS,
   SET_LOADING,
@@ -19,6 +19,19 @@ export default (state, action) => {
         ...state,
         loading: true,
       };
+    case CLEAR_USERS:
+      return {
+        ...state,
+        users: [],
+        loading: false,
+      };
+    case GET_USER:
+      return {
+        ...state,
+        user: action.payload,
+        loading: false,
+      };
+    case GET_REPOS:
     default:
       return state;
   }
